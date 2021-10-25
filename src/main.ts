@@ -1,9 +1,6 @@
-type EventType =
-  | "linkIssue"
-  | "getCurrentGoal"
-  | "getCurrentMetric"
-  | "getCurrentItem"
-  | "updateCurrentItem";
+import axios, { AxiosRequestHeaders } from "axios";
+
+type EventType = "linkIssue" | "getCurrentGoal" | "getCurrentMetric" | "getCurrentItem" | "updateCurrentItem" | "getSettings";
 
 class Gtmhub {
   pluginId = "";
@@ -64,6 +61,32 @@ class Gtmhub {
     });
   };
 
+  getSettings = (): Promise<unknown> => {
+    const type = "getSettings";
+    this.postMessage(type);
+
+    return new Promise((resolve) => {
+      this.promiseMap[type] = resolve;
+    });
+  };
+
+  request = (options: { url: string; method: "GET" | "POST" | "DELETE" | "PUT" | "PATCH"; params: Record<string, unknown>; headers: AxiosRequestHeaders }): Promise<unknown> => {
+    const urlObject = new URL(options.url);
+
+    // TODO: the url should respect the hosting environment
+    const newUrl = "http://localhost:1221/webapp-plugins-proxy" + urlObject.pathname;
+
+    return axios({
+      method: options.method,
+      url: newUrl,
+      headers: options.headers,
+      params: {
+        host: `${urlObject.host}`,
+        ...options.params,
+      },
+    });
+  };
+
   getCurrentGoal = (): Promise<unknown> => {
     const type = "getCurrentGoal";
     this.postMessage(type);
@@ -84,5 +107,6 @@ class Gtmhub {
 }
 
 window["initializeSdk"] = ({ pluginId, pluginPw }) => {
+  /** TODO: add handler which gets the plugin secrets from an api and initialise it with them */
   return new Gtmhub({ pluginId, pluginPw });
 };
