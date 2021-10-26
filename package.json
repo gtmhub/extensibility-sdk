@@ -4,8 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "compile-ts": "babel src/main.ts --out-file dist/main.js",
-    "watch:sdk": "nodemon --watch main.ts --exec npm run compile-ts",
+    "compile-ts": "webpack --mode production",
     "watch:server": "nodemon --watch server.ts --exec ts-node server.ts",
     "start": "concurrently -k -n server,webpack -c magenta,cyan \"npm run watch:server\" \"npm run webpack\"",
     "webpack": "webpack --watch"
