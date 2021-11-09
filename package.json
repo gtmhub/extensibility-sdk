@@ -1,13 +1,17 @@
 {
-  "name": "webapp-plugins-sdk",
-  "version": "1.0.0",
+  "name": "@gtmhub/sdk",
+  "version": "1.0.8",
   "description": "",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "/dist"
+  ],
   "scripts": {
     "compile-ts": "webpack --mode production",
     "watch:server": "nodemon --watch server.ts --exec ts-node server.ts",
     "start": "concurrently -k -n server,webpack -c magenta,cyan \"npm run watch:server\" \"npm run webpack\"",
-    "webpack": "webpack --watch"
+    "build": "webpack --watch --mode=production"
   },
   "repository": {
     "type": "git",
