@@ -1,6 +1,6 @@
 {
   "name": "@gtmhub/sdk",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -11,7 +11,8 @@
     "compile-ts": "webpack --mode production",
     "watch:server": "nodemon --watch server.ts --exec ts-node server.ts",
     "start": "concurrently -k -n server,webpack -c magenta,cyan \"npm run watch:server\" \"npm run webpack\"",
-    "build": "webpack --watch --mode=production"
+    "webpack": "webpack --watch",
+    "build": "webpack --mode=production"
   },
   "repository": {
     "type": "git",
@@ -29,6 +30,7 @@
     "babel-core": "^7.0.0-bridge.0",
     "concurrently": "^6.3.0",
     "cors": "^2.8.5",
+    "express": "^4.17.1",
     "nodemon": "^2.0.12",
     "ts-loader": "^9.2.6",
     "ts-node": "^10.2.1",
@@ -37,7 +39,6 @@
     "webpack-cli": "^4.9.1"
   },
   "dependencies": {
-    "axios": "^0.23.0",
-    "express": "^4.17.1"
+    "axios": "^0.23.0"
   }
 }
