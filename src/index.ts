@@ -114,7 +114,7 @@ class Gtmhub {
   }
 }
 
-window["initializeSdk"] = ({ pluginId, pluginPw }) => {
+export const initialiseSdk = ({ pluginId, pluginPw }) => {
   /** TODO: add handler which gets the plugin secrets from an api and initialise it with them */
   return new Gtmhub({ pluginId, pluginPw });
 };

@@ -1,7 +1,9 @@
 const path = require("path");
+const dist = path.resolve(__dirname, "dist");
 
 module.exports = {
-  entry: "./src/main.ts",
+  name: "gtmhub-plugin-sdk",
+  entry: "./src/index.ts",
   mode: "development",
   module: {
     rules: [
@@ -12,11 +14,13 @@ module.exports = {
       },
     ],
   },
+  output: {
+    path: dist,
+    library: "gtmhub",
+    libraryTarget: "umd",
+    filename: "index.js",
+  },
   resolve: {
     extensions: [".tsx", ".ts", ".js"],
-  },
-  output: {
-    filename: "main.js",
-    path: path.resolve(__dirname, "dist"),
   },
 };

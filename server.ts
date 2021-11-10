@@ -6,7 +6,7 @@ const app = express();
 const file = (fileName) => path.join(__dirname, `/dist/${fileName}`);
 
 app.get("/", (req, res) => {
-  res.sendFile(file("main.js"));
+  res.sendFile(file("index.js"));
 });
 
 const port = 4000;

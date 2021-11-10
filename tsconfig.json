@@ -13,8 +13,10 @@
     "noEmit": false,
     "esModuleInterop": true,
     "isolatedModules": false,
-    "noImplicitAny": false
+    "noImplicitAny": false,
+    "declaration": true,
+    "outDir": "./dist"
   },
-  "include": ["**/*.ts"],
+  "include": ["src/**/*"],
   "exclude": ["node_modules"]
 }
