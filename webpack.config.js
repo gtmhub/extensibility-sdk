@@ -19,6 +19,7 @@ module.exports = {
     library: "gtmhub",
     libraryTarget: "umd",
     filename: "index.js",
+    globalObject: "this",
   },
   resolve: {
     extensions: [".tsx", ".ts", ".js"],
