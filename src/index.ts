@@ -4,7 +4,7 @@ type EventType = "linkIssue" | "getCurrentItem" | "updateCurrentItem" | "getSett
 type MetricEvents = "getMetrics" | "getMetric" | "createMetric" | "updateMetric" | "deleteMetric";
 type GoalEvents = "getGoal" | "getGoals" | "createGoal" | "updateGoal" | "deleteGoal";
 type TaskEvents = "getTask" | "getTasks" | "createTask" | "updateTask" | "deleteTask";
-type UserEvents = "getUser" | "getUsers" | "createUser" | "updateUser" | "deleteUser";
+type UserEvents = "getUser" | "getUsers" | "getCurrentUser" | "createUser" | "updateUser" | "deleteUser";
 type TeamEvents = "getTeam" | "getTeams" | "createTeam" | "updateTeam" | "deleteTeam";
 type SessionEvents = "getSession";
 
@@ -54,6 +54,7 @@ class Gtmhub {
   /** USERS */
   getUser = (id: string): Promise<unknown> => this.postMessage("getUser", { id });
   getUsers = (payload): Promise<unknown> => this.postMessage("getUsers", { payload });
+  getCurrentUser = (): Promise<unknown> => this.postMessage("getCurrentUser");
   deleteUser = (id: string): Promise<unknown> => this.postMessage("deleteUser", { id });
   createUser = (payload): Promise<unknown> => this.postMessage("createUser", { payload });
   updateUser = (payload): Promise<unknown> => this.postMessage("updateUser", { payload });
