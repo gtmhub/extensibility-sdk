@@ -10,13 +10,11 @@ type SessionEvents = "getSession";
 
 class Gtmhub {
   pluginId = "";
-  pluginPw = "";
 
   promiseMap: { [method: string]: { resolve: (data: unknown) => unknown; reject: (error: unknown) => unknown } } = {};
 
-  constructor({ pluginId, pluginPw }) {
+  constructor({ pluginId }) {
     this.pluginId = pluginId;
-    this.pluginPw = pluginPw;
 
     window.addEventListener("message", (event) => {
       const { type, data } = event.data;
@@ -99,7 +97,6 @@ class Gtmhub {
           ...data,
           pluginSettings: {
             pluginId: this.pluginId,
-            pluginPw: this.pluginPw,
           },
         },
       },
@@ -115,7 +112,7 @@ class Gtmhub {
   }
 }
 
-export const initialiseSdk = ({ pluginId, pluginPw }) => {
+export const initialiseSdk = ({ pluginId }) => {
   /** TODO: add handler which gets the plugin secrets from an api and initialise it with them */
-  return new Gtmhub({ pluginId, pluginPw });
+  return new Gtmhub({ pluginId });
 };
