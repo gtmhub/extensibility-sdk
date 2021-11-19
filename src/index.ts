@@ -1,11 +1,12 @@
 import axios, { AxiosRequestHeaders } from "axios";
 
-type EventType = "linkIssue" | "getCurrentItem" | "updateCurrentItem" | "getSettings" | MetricEvents | GoalEvents | TaskEvents | SessionEvents | UserEvents | TeamEvents;
+type EventType = "linkIssue" | "getCurrentItem" | "updateCurrentItem" | PluginEvents | MetricEvents | GoalEvents | TaskEvents | SessionEvents | UserEvents | TeamEvents;
 type MetricEvents = "getMetrics" | "getMetric" | "createMetric" | "updateMetric" | "deleteMetric";
 type GoalEvents = "getGoal" | "getGoals" | "createGoal" | "updateGoal" | "deleteGoal";
 type TaskEvents = "getTask" | "getTasks" | "createTask" | "updateTask" | "deleteTask";
 type UserEvents = "getUser" | "getUsers" | "getCurrentUser" | "createUser" | "updateUser" | "deleteUser";
 type TeamEvents = "getTeam" | "getTeams" | "createTeam" | "updateTeam" | "deleteTeam";
+type PluginEvents = "getSetting" | "getSettings";
 type SessionEvents = "getSession";
 
 class Gtmhub {
@@ -67,9 +68,12 @@ class Gtmhub {
   /** SESSIONS */
   getSession = (id: string): Promise<unknown> => this.postMessage("getSession", { id });
 
+  /** SETTINGS */
+  getSettings = (): Promise<unknown> => this.postMessage("getSettings");
+  getSetting = (id: string): Promise<unknown> => this.postMessage("getSetting", { id });
+
   updateCurrentItem = (data: unknown): Promise<unknown> => this.postMessage("updateCurrentItem", data);
   getCurrentItem = (): Promise<unknown> => this.postMessage("getCurrentItem");
-  getSettings = (): Promise<unknown> => this.postMessage("getSettings");
   linkIssue = (issue): Promise<unknown> => this.postMessage("linkIssue", issue);
 
   request = (options: { url: string; method: "GET" | "POST" | "DELETE" | "PUT" | "PATCH"; params: Record<string, unknown>; headers: AxiosRequestHeaders }): Promise<unknown> => {
