@@ -1,18 +1,25 @@
 import axios, { AxiosRequestHeaders } from "axios";
 
-type EventType = "linkIssue" | "getCurrentItem" | "updateCurrentItem" | PluginEvents | MetricEvents | GoalEvents | TaskEvents | SessionEvents | UserEvents | TeamEvents;
+type EventType = "linkIssue" | "getCurrentItem" | "updateCurrentItem" | PluginEvents | MetricEvents | GoalEvents | TaskEvents | SessionEvents | UserEvents | AccountEvents | TeamEvents;
 type MetricEvents = "getMetrics" | "getMetric" | "createMetric" | "updateMetric" | "deleteMetric";
 type GoalEvents = "getGoal" | "getGoals" | "createGoal" | "updateGoal" | "deleteGoal";
 type TaskEvents = "getTask" | "getTasks" | "createTask" | "updateTask" | "deleteTask";
 type UserEvents = "getUser" | "getUsers" | "getCurrentUser" | "createUser" | "updateUser" | "deleteUser";
+type AccountEvents = "getAccountId";
 type TeamEvents = "getTeam" | "getTeams" | "createTeam" | "updateTeam" | "deleteTeam";
 type PluginEvents = "getSetting" | "getSettings";
 type SessionEvents = "getSession";
 
+type Setting = { key: string; value: string };
 class Gtmhub {
   pluginId = "";
 
-  promiseMap: { [method: string]: { resolve: (data: unknown) => unknown; reject: (error: unknown) => unknown } } = {};
+  promiseMap: {
+    [method: string]: {
+      resolve: (value) => void;
+      reject: (reason) => void;
+    };
+  } = {};
 
   constructor({ pluginId }) {
     this.pluginId = pluginId;
@@ -69,31 +76,35 @@ class Gtmhub {
   getSession = (id: string): Promise<unknown> => this.postMessage("getSession", { id });
 
   /** SETTINGS */
-  getSettings = (): Promise<unknown> => this.postMessage("getSettings");
-  getSetting = (id: string): Promise<unknown> => this.postMessage("getSetting", { id });
+  getSettings = () => this.postMessage<Setting[]>("getSettings");
+  getSetting = (id: string) => this.postMessage<Setting>("getSetting", { id });
 
   updateCurrentItem = (data: unknown): Promise<unknown> => this.postMessage("updateCurrentItem", data);
   getCurrentItem = (): Promise<unknown> => this.postMessage("getCurrentItem");
   linkIssue = (issue): Promise<unknown> => this.postMessage("linkIssue", issue);
 
-  request = (options: { url: string; method: "GET" | "POST" | "DELETE" | "PUT" | "PATCH"; params: Record<string, unknown>; headers: AxiosRequestHeaders }): Promise<unknown> => {
+  getAccountId = (): Promise<string> => this.postMessage("getAccountId");
+
+  request = (options: { url: string; method: "GET" | "POST" | "DELETE" | "PUT" | "PATCH"; params?: Record<string, unknown>; data?: unknown; headers?: AxiosRequestHeaders }): Promise<unknown> => {
     const urlObject = new URL(options.url);
 
     // TODO: the url should respect the hosting environment
-    const newUrl = "https://app.staging.gtmhub.com/webapp-plugins-proxy" + urlObject.pathname;
+    const newUrl = "https://plugins.staging.gtmhub.com" + urlObject.pathname;
 
     return axios({
       method: options.method,
       url: newUrl,
       headers: options.headers,
+      data: options.data,
       params: {
-        host: `${urlObject.host}`,
+        pluginVersionId: this.pluginId,
+        host: `${urlObject.protocol}//${urlObject.host}`,
         ...options.params,
       },
     });
   };
 
-  postMessage(type: EventType, data?) {
+  postMessage<T>(type: EventType, data?): Promise<T> {
     window.parent.postMessage(
       {
         type,
@@ -107,7 +118,7 @@ class Gtmhub {
       "*"
     );
 
-    return new Promise((resolve, reject) => {
+    return new Promise<T>((resolve, reject) => {
       this.promiseMap[type] = {
         resolve,
         reject,
