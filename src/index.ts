@@ -1,6 +1,6 @@
 import axios, { AxiosRequestHeaders } from "axios";
 
-type EventType = "linkIssue" | "getCurrentItem" | "updateCurrentItem" | PluginEvents | MetricEvents | GoalEvents | TaskEvents | SessionEvents | UserEvents | AccountEvents | TeamEvents;
+type EventType = "linkIssue" | "getCurrentItem" | "updateCurrentItem" | GeneralEvents | PluginEvents | MetricEvents | GoalEvents | TaskEvents | SessionEvents | UserEvents | AccountEvents | TeamEvents;
 type MetricEvents = "getMetrics" | "getMetric" | "createMetric" | "updateMetric" | "deleteMetric";
 type GoalEvents = "getGoal" | "getGoals" | "createGoal" | "updateGoal" | "deleteGoal";
 type TaskEvents = "getTask" | "getTasks" | "createTask" | "updateTask" | "deleteTask";
@@ -9,10 +9,13 @@ type AccountEvents = "getAccountId";
 type TeamEvents = "getTeam" | "getTeams" | "createTeam" | "updateTeam" | "deleteTeam";
 type PluginEvents = "getSetting" | "getSettings";
 type SessionEvents = "getSession";
-
+type GeneralEvents = "getDc";
 type Setting = { key: string; value: string };
+
+type dc = "us" | "eu" | "staging";
 class Gtmhub {
   pluginId = "";
+  dc;
 
   promiseMap: {
     [method: string]: {
@@ -23,6 +26,10 @@ class Gtmhub {
 
   constructor({ pluginId }) {
     this.pluginId = pluginId;
+
+    if (!this.dc) {
+      this.postMessage("getDc").then((dc) => (this.dc = dc));
+    }
 
     window.addEventListener("message", (event) => {
       const { type, data } = event.data;
@@ -87,9 +94,7 @@ class Gtmhub {
 
   request = (options: { url: string; method: "GET" | "POST" | "DELETE" | "PUT" | "PATCH"; params?: Record<string, unknown>; data?: unknown; headers?: AxiosRequestHeaders }): Promise<unknown> => {
     const urlObject = new URL(options.url);
-
-    // TODO: the url should respect the hosting environment
-    const newUrl = "https://plugins.staging.gtmhub.com" + urlObject.pathname;
+    const newUrl = getProxyUrl(this.dc) + urlObject.pathname;
 
     return axios({
       method: options.method,
@@ -127,7 +132,15 @@ class Gtmhub {
   }
 }
 
-export const initialiseSdk = ({ pluginId }) => {
-  /** TODO: add handler which gets the plugin secrets from an api and initialise it with them */
-  return new Gtmhub({ pluginId });
+const getProxyUrl = (dc: dc) => {
+  if (dc === "eu") {
+    return "https://plugins.gtmhub.com";
+  }
+  if (dc === "us") {
+    return "https://plugins.us.gtmhub.com";
+  }
+
+  return "https://plugins.staging.gtmhub.com";
 };
+
+export const initialiseSdk = ({ pluginId }) => new Gtmhub({ pluginId });
