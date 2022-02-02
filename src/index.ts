@@ -9,7 +9,7 @@ type AccountEvents = "getAccountId";
 type TeamEvents = "getTeam" | "getTeams" | "createTeam" | "updateTeam" | "deleteTeam";
 type PluginEvents = "getSetting" | "getSettings";
 type SessionEvents = "getSession";
-type GeneralEvents = "getDc";
+type GeneralEvents = "getDc" | "resize";
 type Setting = { key: string; value: string };
 
 type dc = "us" | "eu" | "staging";
@@ -91,6 +91,8 @@ class Gtmhub {
   linkIssue = (issue): Promise<unknown> => this.postMessage("linkIssue", issue);
 
   getAccountId = (): Promise<string> => this.postMessage("getAccountId");
+
+  resize = (payload: { height: number }): Promise<string> => this.postMessage("resize", { payload });
 
   request = (options: { url: string; method: "GET" | "POST" | "DELETE" | "PUT" | "PATCH"; params?: Record<string, unknown>; data?: unknown; headers?: AxiosRequestHeaders }): Promise<unknown> => {
     const urlObject = new URL(options.url);
