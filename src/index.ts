@@ -1,7 +1,7 @@
 import axios, { AxiosRequestHeaders } from "axios";
 
 type EventType = "linkIssue" | "getCurrentItem" | "updateCurrentItem" | GeneralEvents | PluginEvents | MetricEvents | GoalEvents | TaskEvents | SessionEvents | UserEvents | AccountEvents | TeamEvents;
-type MetricEvents = "getMetrics" | "getMetric" | "createMetric" | "updateMetric" | "deleteMetric";
+type MetricEvents = "getMetrics" | "getMetric" | "createMetric" | "updateMetric" | "deleteMetric" | "checkinMetric";
 type GoalEvents = "getGoal" | "getGoals" | "createGoal" | "updateGoal" | "deleteGoal";
 type TaskEvents = "getTask" | "getTasks" | "createTask" | "updateTask" | "deleteTask";
 type UserEvents = "getUser" | "getUsers" | "getCurrentUser" | "createUser" | "updateUser" | "deleteUser";
@@ -49,6 +49,7 @@ class Gtmhub {
   deleteMetric = (id: string): Promise<unknown> => this.postMessage("deleteMetric", { id });
   createMetric = (payload): Promise<unknown> => this.postMessage("createMetric", { payload });
   updateMetric = (payload): Promise<unknown> => this.postMessage("updateMetric", { payload });
+  checkinMetric = (payload): Promise<unknown> => this.postMessage("checkinMetric", { payload });
 
   /** GOALS */
   getGoal = (id: string): Promise<unknown> => this.postMessage("getGoal", { id });
