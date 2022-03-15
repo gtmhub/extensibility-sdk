@@ -1,0 +1,26 @@
+name: NodeJS with Webpack
+
+on:
+  push:
+    branches: [ production ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Use Node.js 16.x
+      uses: actions/setup-node@v2
+      with:
+        node-version: '16.x'
+        registry-url: 'https://registry.npmjs.org'
+
+    - name: Build
+      run: |
+        npm install
+        npx webpack
+    - run: npm publish
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
