@@ -11,7 +11,8 @@
     "watch:server": "nodemon --watch server.ts --exec ts-node server.ts",
     "start": "concurrently -k -n server,webpack -c magenta,cyan \"npm run watch:server\" \"npm run webpack\"",
     "webpack": "webpack --watch",
-    "build": "webpack --mode=production"
+    "build": "webpack --mode=production",
+    "prepublishOnly": "webpack --mode=production"
   },
   "repository": {
     "type": "git",
