@@ -9,7 +9,7 @@ type AccountEvents = "getAccountId";
 type TeamEvents = "getTeam" | "getTeams" | "createTeam" | "updateTeam" | "deleteTeam";
 type PluginEvents = "getSetting" | "getSettings";
 type SessionEvents = "getSession";
-type GeneralEvents = "getDc" | "resize";
+type GeneralEvents = "getDc" | "resize" | "getAccountSettings";
 type Setting = { key: string; value: string };
 
 type dc = "us" | "eu" | "staging";
@@ -92,6 +92,7 @@ class Gtmhub {
   linkIssue = (issue): Promise<unknown> => this.postMessage("linkIssue", issue);
 
   getAccountId = (): Promise<string> => this.postMessage("getAccountId");
+  getAccountSettings = (): Promise<unknown> => this.postMessage("getAccountSettings");
 
   resize = (payload: { height: number }): Promise<string> => this.postMessage("resize", { payload });
 
