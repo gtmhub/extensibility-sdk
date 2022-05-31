@@ -34,6 +34,12 @@ class Gtmhub {
     window.addEventListener("message", (event) => {
       const { type, data } = event.data;
 
+      // messages can come from different origins, so make sure
+      // we use only expected ones
+      if (!type) {
+        return;
+      }
+
       /** some endpoints doesn't return data (DELETE,PATCH) */
       if (data && data.error) {
         return this.promiseMap[type].reject(data);
