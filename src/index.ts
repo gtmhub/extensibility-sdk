@@ -193,7 +193,6 @@ class Gtmhub {
   
       const eventCallback = this.callbackMap["onEventTypeNotSupported"];
       eventCallback && eventCallback(payload);
-      this.postMessage("onEventTypeNotSupported", { payload });
     };
     private notifyMessageTypeNotExpected = (messageType: string) => {
       const payload = {
@@ -208,7 +207,6 @@ class Gtmhub {
   
       const eventCallback = this.callbackMap["onEventTypeNotExpected"];
       eventCallback && eventCallback(payload);
-      this.postMessage("onEventTypeNotExpected", { payload });
     };
 
   resize = (payload: { height: number }): Promise<string> =>
