@@ -211,14 +211,14 @@ class Gtmhub {
 
 const getProxyUrl = (dc: GtmhubSdkDc) => {
   if (dc === "staging") {
-    return "https://plugins.staging.gtmhub.com";
+    return "https://plugins.staging.quantive.com";
   }
 
   if (dc === "eu") {
-    return "https://plugins.gtmhub.com";
+    return "https://plugins.quantive.com";
   }
 
-  return `https://plugins.${dc}.gtmhub.com`;
+  return `https://plugins.${dc}.quantive.com`;
 };
 
 export const initialiseSdk = ({ pluginId }) => new Gtmhub({ pluginId });

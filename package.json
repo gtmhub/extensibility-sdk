@@ -1,6 +1,6 @@
 {
   "name": "@gtmhub/sdk",
-  "version": "1.0.53",
+  "version": "1.0.54",
   "description": "",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -16,11 +16,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://iliahanev@bitbucket.org/gtmhub/webapp-plugins-sdk.git"
+    "url": "https://github.com/gtmhub/extensibility-sdk"
   },
   "author": "",
   "license": "ISC",
-  "homepage": "https://bitbucket.org/gtmhub/webapp-plugins-sdk#readme",
+  "homepage": "https://github.com/gtmhub/extensibility-sdk/blob/master/README.MD",
   "devDependencies": {
     "@types/cors": "^2.8.12",
     "@types/express": "^4.17.13",
