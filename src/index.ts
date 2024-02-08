@@ -1,5 +1,5 @@
 import axios, { AxiosRequestHeaders } from "axios";
-import { SdkEventType, GtmhubSdkDc, Setting, sdkEventTypes } from "./models";
+import { SdkEventType, GtmhubSdkDc, Setting, sdkEventTypes, Permission } from "./models";
 const sdkVersion = require("../package.json").version;
 
 const DEFAULT_GTMUB_SDK_DC = "eu";
@@ -112,6 +112,9 @@ class Gtmhub {
 
   /** SESSIONS */
   getSession = (id: string): Promise<unknown> => this.postMessage("getSession", { id });
+
+  /** PERMISSIONS */
+  getUserPermissions = (): Promise<Permission[]> => this.postMessage("getUserPermissions");
 
   /** SETTINGS */
   getSettings = () => this.postMessage<Setting[]>("getSettings");
